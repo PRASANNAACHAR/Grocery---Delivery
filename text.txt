@@ -1,0 +1,11 @@
+greatestack video ended: 11:00:13
+
+
+dependices
+ npm install react-router-dom react-hot-toast lucide-react @icons-pack/react-simple-icons leaflet react-leaflet
+
+cloudinary
+neon
+ingeest
+nodemailer
+brevo
