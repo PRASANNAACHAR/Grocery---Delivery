@@ -3,76 +3,79 @@ import { prisma } from "../config/prisma.js";
 
 
 // get /api/products/flash-deals
-export const getFlashDeals = async (req:Request, res: Response) =>{
+export const getFlashDeals = async (req: Request, res: Response) => {
     const products = await prisma.product.findMany({
-        where: {stock: {gt:0}},
-        orderBy:{originalPrice: "desc"}
+        where: { stock: { gt: 0 } },
+        orderBy: { originalPrice: "desc" }
     })
 
-    const productsWithDiscount = products.map((p: any)=>{
-        const discount = p.originalPrice && p.price ?  Math.round(((p.originalPrice - p.price)/ p.originalPrice) * 100) : 0;
-        return {...p, discount}
+    const productsWithDiscount = products.map((p: any) => {
+        const discount = p.originalPrice && p.price ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
+        return { ...p, discount }
     })
 
-    res.json({products: productsWithDiscount.slice(0,8)})
+    res.json({ products: productsWithDiscount.slice(0, 8) })
 }
 
 // get /api/products
-export const getProducts = async (req:Request, res: Response) =>{
-    const {catrgory, search , minPrice, maxPrice, sort} = req.query;
+export const getProducts = async (req: Request, res: Response) => {
+    const { category, search, minPrice, maxPrice, sort } = req.query;
 
     const where: any = {};
-    if(catrgory && catrgory !== "all") where.catrgory = catrgory as string;
-    if(search ) where.name ={contains: search as string, mode: "insensitive"};
-    if(minPrice || maxPrice) {
+    if (category && category !== "all") where.category = category as string;
+    if (search) where.name = { contains: search as string, mode: "insensitive" };
+    if (minPrice || maxPrice) {
         where.price = {};
-        if(minPrice) where.price.gte = Number(minPrice)
-        if(maxPrice) where.price.gte = Number(maxPrice)
+        if (minPrice) where.price.gte = Number(minPrice)
+        if (maxPrice) where.price.lte = Number(maxPrice)
     }
 
     const orderBy: any = {};
-        if(sort === "price-low") orderBy.price = "asc"
-        else if(sort === "price-high") orderBy.price = "desc"
-        else orderBy.createdAt = "desc"
+    if (sort === "price_asc") orderBy.price = "asc"
+    else if (sort === "price_desc") orderBy.price = "desc"
+    else if (sort === "name") orderBy.name = "asc";
+    else if (sort === "rating") orderBy.rating = "desc";
+    else orderBy.createdAt = "desc"
 
-        const products = await prisma.product.findMany({where, orderBy})
+    const products = await prisma.product.findMany({ where, orderBy })
 
 
-        const productsWithDiscount = products.map((p: any)=>{
-        const discount = p.originalPrice && p.price ?  Math.round(((p.originalPrice - p.price)/ p.originalPrice) * 100) : 0;
-        return {...p, discount}
+    const productsWithDiscount = products.map((p: any) => {
+        const discount = p.originalPrice && p.price ? Math.round(((p.originalPrice - p.price) / p.originalPrice) * 100) : 0;
+        return { ...p, discount }
     })
-    res.json({products: productsWithDiscount})
+    res.json({ products: productsWithDiscount })
 }
 
 // get /api.porducts/:id
+export const getProduct = async (req: Request, res: Response) => {
+    const product = await prisma.product.findUnique({ where: { id: req.params.id as string } })
 
-export const getProduct = async (req:Request, res: Response) =>{
-    const product = await prisma.product.findUnique({where: {id: req.params.id as string}})
-
-    if(!product){
-        res.status(404).json({message: "Product not found"})
+    if (!product) {
+        res.status(404).json({ message: "Product not found" })
         return;
     }
-    const discount = product.originalPrice && product.price ?  Math.round(((product.originalPrice - product.price)/ product.originalPrice) * 100) : 0;
+    const discount = product.originalPrice && product.price ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
 
-    res.json({product: {...product, discount}})
+    res.json({ product: { ...product, discount } })
 }
 
 // post /api/products
-export const createProduct = async (req:Request, res: Response) =>{
-   const product = await prisma.product.create({data: req.body})
-   res.status(201).json({product})
+export const createProduct = async (req: Request, res: Response) => {
+    const product = await prisma.product.create({ data: req.body })
+    res.status(201).json({ product })
 }
 
 // put /api/products.:id
-export const updateProduct = async (req:Request, res: Response) =>{
-   const product = await prisma.product.update({where: {id: req.params.id as string}, data: req.body})
-   res.json({product})
+export const updateProduct = async (req: Request, res: Response) => {
+    const product = await prisma.product.update({ where: { id: req.params.id as string }, data: req.body })
+    res.json({ product })
 }
 
 // delete /api/products.:id
-export const deleteProduct = async (req:Request, res: Response) =>{
-   await prisma.product.delete({where: {id: req.params.id as string}})
-   res.json({message: "Deleted"})
+export const deleteProduct = async (req: Request, res: Response) => {
+    await prisma.product.update({ where: { id: req.params.id as string },
+    data: {stock: Number(0)}
+    })
+    res.json({ message: "Product Updated" })
 }

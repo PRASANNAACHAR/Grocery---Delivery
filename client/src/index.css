@@ -128,3 +128,18 @@ input:focus {
 .animate-pulse-soft {
     animation: pulse-soft 2s ease-in-out infinite;
 }
+
+/* Leaflet z-index fix */
+.leaflet-container {
+    z-index: 1 !important;
+}
+
+.leaflet-pane {
+    z-index: 1 !important;
+}
+
+.leaflet-top,
+.leaflet-bottom,
+.leaflet-control {
+    z-index: 2 !important;
+}

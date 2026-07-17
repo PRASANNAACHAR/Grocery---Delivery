@@ -1,11 +1,17 @@
-greatestack video ended: 12:40:13
+greatestack video ended: 15:58:56
 
 
 dependices
- npm install react-router-dom react-hot-toast lucide-react @icons-pack/react-simple-icons leaflet react-leaflet
+ npm install react-router-dom react-hot-toast lucide-react @icons-pack/react-simple-icons leaflet react-leaflet axios 
 
 cloudinary
 neon
 ingeest
 nodemailer
 brevo
+
+
+
+greatstack mistake
+client: 13:52:45
+you don't add the mixprice you added maxprice only

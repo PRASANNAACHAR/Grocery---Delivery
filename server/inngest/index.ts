@@ -1,7 +1,7 @@
 import { cron, Inngest, step } from "inngest";
 import { prisma } from "../config/prisma.js";
 import sendEmail from "../config/nodemailer.js";
-import { timeStamp } from "node:console";
+import { timestamp } from "node:console";
 
 
 const LOW_STOCK_THRESHOLD = 10;
@@ -206,7 +206,7 @@ const autoAssignRider = inngest.createFunction({
         history.push({
             status: "Assigned",
             note:`Auto-assigned to ${availableRider.name}`,
-            timeStamp: new Date(),
+            timestamp: new Date(),
         })
 
         await prisma.order.update({

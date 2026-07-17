@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import bcrypt from 'bcrypt'
-import { timeStamp } from "node:console";
 
 
 // get admin dashboard data
@@ -46,7 +45,7 @@ export const createDeliveryPartner = async (req: Request, res: Response) => {
   const hashedPassword = await bcrypt.hash(password, 10)
 
   const partner = await prisma.deliveryPartner.create({
-    data: {name, email:email.tolowerCase(), password: hashedPassword, phone, vehicleType}
+    data: {name, email:email.toLowerCase(), password: hashedPassword, phone, vehicleType}
   })
 
    res.status(201).json({partner})
@@ -60,7 +59,7 @@ export const updateDeliveryPartner = async (req: Request, res: Response) => {
       if(name) data.name = name;
       if(phone) data.phone = phone;
       if(vehicleType) data.vehicleType = vehicleType;
-      if(isActive) data.isActive = isActive;
+       data.isActive = isActive;
     
       try {
         const partner = await prisma.deliveryPartner.update({
@@ -96,7 +95,7 @@ export const assignDeliveryPartner = async (req: Request, res: Response) => {
     status = "Assigned";
     history.push({
         status: "Assigned",
-        note: `Assigned to ${partner!.name}`, timeStamp: new Date()
+        note: `Assigned to ${partner!.name}`, timestamp: new Date()
     })
    }
 

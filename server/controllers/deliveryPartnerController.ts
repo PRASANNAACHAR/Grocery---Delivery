@@ -2,8 +2,6 @@ import { Request, Response } from "express";
 import { prisma } from "../config/prisma.js";
 import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
-import { json } from "node:stream/consumers";
-import { timeStamp } from "node:console";
 
 const generateToken = (id: string)=>{
   return jwt.sign({id, role: "delivery"}, process.env.JWT_SECRET as string, {expiresIn: "30d"})
@@ -21,7 +19,7 @@ export const loginPartner = async (req: Request, res: Response) => {
  }
  
  const partner = await prisma.deliveryPartner.findUnique({where: {
-    email: email.tolowerCase()
+    email: email.toLowerCase()
  }})
 
  if(!partner){
@@ -99,11 +97,11 @@ export const compleyeDelivery = async (req: Request, res: Response) => {
 
   const history = order.statusHistory as any[];
   
-  history.push({status: "Delivered", note: "Delivered by partner", timeStamp: new Date()})
+  history.push({status: "Delivered", note: "Delivered by partner", timestamp: new Date()})
 
    const updatedOrder = await prisma.order.update({
     where: {id: order.id},
-    data: {status: "Delivred", statusHistory: history, deliveryOtp: ""}
+    data: {status: "Delivered", statusHistory: history, deliveryOtp: ""}
    })
 
    res.json({order: updatedOrder, message: "Delivery completed successfuly"})
@@ -124,7 +122,7 @@ export const cancelDelivery = async (req: Request, res: Response) => {
 
   const history = order!.statusHistory as any[];
   
-  history.push({status: "Cancelled", note: reason ||"", timeStamp: new Date()})
+  history.push({status: "Cancelled", note: reason ||"", timestamp: new Date()})
 
    const updatedOrder = await prisma.order.update({
     where: {id: order!.id},
@@ -149,7 +147,7 @@ export const updateDeliveryStatus = async (req: Request, res: Response) => {
 
   const history = order!.statusHistory as any[];
   
-  history.push({status, note:`Status updated to ${status}`, timeStamp: new Date()})
+  history.push({status, note:`Status updated to ${status}`, timestamp: new Date()})
 
   const updatedOrder = await prisma.order.update({
     where: {id:order!.id},

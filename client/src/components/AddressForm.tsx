@@ -51,9 +51,9 @@ const AddressForm = ({ resetForm, handleSumbit, form, setForm, editingId }: any)
                                 <input type="text" required className="w-full px-4 py-2.5 text-sm rounded-xl border border-app-border focus:border-app-green outline-none" value={form.zip} onChange={(e) => setForm({ ...form, zip: e.target.value })} />
                             </div>
                             <div className="flex items-end pb-1">
-                                <label className="flex items-center cursor-pointer"> 
+                                <label className="flex items-center cursor-pointer gap-2"> 
                     <input type="checkbox" checked={form.isDefault} onChange={(e)=> setForm({...form, isDefault: e.target.checked})} />
-                      <span className="text-sm text-app-text">Set as default</span>
+                      <span className="text-sm text-app-text"> Set as default</span>
                     </label>
                             </div>
                         </div>

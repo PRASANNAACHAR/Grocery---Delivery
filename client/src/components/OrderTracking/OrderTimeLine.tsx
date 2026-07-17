@@ -5,6 +5,8 @@ export default function OrderTimeLine({ order }: { order: any }) {
     const allStatuses = ["Placed", "Confirmed", "Assigned", "Packed", "Out for Delivery", "Delivered"];
     const currentIdx = allStatuses.indexOf(order.status);
 
+  
+
     const statusIcons: any = {
         Placed: ClockIcon,
         Confirmed: CheckIcon,
