@@ -2,7 +2,7 @@ greatestack video ended: 15:58:56
 
 
 dependices
- npm install react-router-dom react-hot-toast lucide-react @icons-pack/react-simple-icons leaflet react-leaflet axios 
+ npm install react-router-dom react-hot-toast lucide-react @icons-pack/react-simple-icons leaflet react-leaflet axios  stripe 
 
 cloudinary
 neon
