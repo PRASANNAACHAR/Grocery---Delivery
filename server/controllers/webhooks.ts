@@ -5,7 +5,7 @@ import { inngest } from "../inngest/index.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
-const endpointSecret = 'process.env.STRIPE_WEBHOOK_SECRET';
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export const stripeWebhook = async (request: Request, response: Response) => {
      let event;
@@ -52,7 +52,7 @@ export const stripeWebhook = async (request: Request, response: Response) => {
   }
 
   if(paidOrder){
-    await inngest.send({name: "order/placed", data:{orderId}})
+    await inngest.send({name: "order.placed", data:{orderId}})
   }
 
   //   send stock update events for ecah product in the order
