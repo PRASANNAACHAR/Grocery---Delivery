@@ -10,8 +10,12 @@ ingeest
 nodemailer
 brevo
 
+deliverypartner check the orders
+website http://localhost:5173/delivery
+login the same dliery partner details
 
 
 greatstack mistake
 client: 13:52:45
 you don't add the mixprice you added maxprice only
+
